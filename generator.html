@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOONCAVE JSON Generator</title>
+</head>
+<body>
+    <button id="generate-json">Generate videos.json</button>
+    <script>
+        document.getElementById('generate-json').addEventListener('click', function() {
+            const totalVideos = 2324;
+            const basePath = '/videos/';
+            const thumbnailBasePath = '/videos/thumbnails/';
+            
+            const videos = Array.from({ length: totalVideos }, (_, i) => {
+                const number = i + 1;
+                const title = `Video ${number}`;
+                return {
+                    title: title,
+                    src: `${basePath}${number}.webm`,
+                    thumbnail: `${thumbnailBasePath}${number}-thumbnail.jpg`
+                };
+            });
+            const json = JSON.stringify(videos, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'videos.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
